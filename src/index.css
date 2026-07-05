@@ -1,13 +1,162 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Fraunces", serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  
+  --color-cosmic-bg-start: #06080f;
+  --color-cosmic-bg-end: #0b1020;
+  --color-cosmic-accent-start: #6e93f7;
+  --color-cosmic-accent-end: #8b5cf6;
+  --color-cosmic-coral: #ff8a65;
+  --color-cosmic-teal: #14b8a6;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  background-color: #06080f;
+  font-family: var(--font-sans);
+  color: #f3f4f6;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #06080f 0%, #0b1020 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* ── Custom Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #06080f;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6e93f7 0%, #8b5cf6 100%);
+  border-radius: 999px;
+  box-shadow: 0 0 6px rgba(110, 147, 247, 0.5);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b5cf6 0%, #a78bfa 100%);
+}
+
+/* ── Focus States ─────────────────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid #ff8a65;
+  outline-offset: 4px;
+}
+
+/* ── Keyframe Animations ──────────────────────────────────────────────────── */
+@keyframes cosmic-pulse {
+  0%, 100% { transform: scale(1);   opacity: 0.5; filter: blur(80px); }
+  50%       { transform: scale(1.1); opacity: 0.7; filter: blur(100px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes float-astronaut {
+  0%   { transform: translateY(0px)    rotate(0deg); }
+  33%  { transform: translateY(-12px)  rotate(-1.5deg); }
+  66%  { transform: translateY(6px)    rotate(1deg); }
+  100% { transform: translateY(0px)    rotate(0deg); }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 1; }
+}
+
+@keyframes scroll-code {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* Button shimmer sweep */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%) skewX(-20deg); }
+  100% { transform: translateX(250%)  skewX(-20deg); }
+}
+
+/* Count-up fade in */
+@keyframes count-up-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Animation Classes ────────────────────────────────────────────────────── */
+.animate-cosmic-pulse   { animation: cosmic-pulse      8s ease-in-out infinite; }
+.animate-float-slow     { animation: float-slow        6s ease-in-out infinite; }
+.animate-float-astronaut{ animation: float-astronaut  8s ease-in-out infinite; }
+.animate-scroll-code    { animation: scroll-code      20s linear    infinite; }
+
+/* Shimmer button overlay */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) skewX(-20deg);
+  animation: shimmer-sweep 2.8s ease-in-out infinite;
+}
+
+/* ── Glass Utilities ──────────────────────────────────────────────────────── */
+.glass {
+  background: rgba(11, 16, 32, 0.45);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-accent {
+  background: rgba(110, 147, 247, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(110, 147, 247, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(110, 147, 247, 0.05);
+}
+
+.glass-card {
+  background: rgba(15, 23, 42, 0.3);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(15, 23, 42, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(110, 147, 247, 0.25);
+}
+
+/* Stat cards hover glow variants */
+.stat-card-blue:hover  { border-color: rgba(110, 147, 247, 0.45) !important; box-shadow: 0 0 24px rgba(110, 147, 247, 0.2), 0 16px 32px -8px rgba(0,0,0,0.4); }
+.stat-card-purple:hover{ border-color: rgba(139, 92, 246, 0.45) !important;  box-shadow: 0 0 24px rgba(139, 92, 246, 0.2), 0 16px 32px -8px rgba(0,0,0,0.4); }
+.stat-card-coral:hover { border-color: rgba(255, 138, 101, 0.45)!important;  box-shadow: 0 0 24px rgba(255, 138, 101, 0.2),0 16px 32px -8px rgba(0,0,0,0.4); }
+
+/* ── Cosmic Grid ──────────────────────────────────────────────────────────── */
+.cosmic-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
