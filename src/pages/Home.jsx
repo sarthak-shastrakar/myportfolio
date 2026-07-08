@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Download } from 'lucide-react';
-import spacemanImg from '../../media/spaceman2.4aa1e6e6a8203ae8e2af.png';
+import spacemanImg from '../../media/astronout_3d.a026954aa7516298baee.png';
 import resumePdf from '../../media/Sarthak_Fullstack_developer_new.32a16d90b49080b023f3.pdf';
+import DownloadButton from '../components/DownloadButton';
 
 /* ── Rotating Roles with blinking cursor ─────────────────────────────────── */
 const ROLES = [
@@ -63,7 +64,7 @@ const TypingSubtitle = () => {
   }, [phase, charIdx, roleIdx]);
 
   return (
-    <div className="flex items-center gap-1.5 font-mono text-lg sm:text-xl font-bold h-8">
+    <div className="flex items-center gap-1.5 font-mono text-lg sm:text-xl font-bold h-8 min-w-[320px] w-full">
       <span className="text-gray-400">/</span>
       <span className="bg-gradient-to-r from-[#6e93f7] to-[#a78bfa] bg-clip-text text-transparent">
         {displayed}
@@ -109,6 +110,14 @@ const CountUp = ({ target, suffix = '' }) => {
 
 /* ── Main Home Component ─────────────────────────────────────────────────── */
 const Home = () => {
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = resumePdf;
+    link.setAttribute('download', 'Sarthak_Shastrakar_Resume.pdf');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
 
   return (
     <div className="flex flex-col gap-16 w-full mt-4 md:mt-8">
@@ -171,14 +180,7 @@ const Home = () => {
               <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform duration-300" />
             </Link>
 
-            <a
-              href={resumePdf}
-              download="Sarthak_Shastrakar_Resume.pdf"
-              className="group flex items-center justify-center gap-2 px-8 py-3.5 rounded-full glass border border-white/10 hover:border-[#6e93f7]/40 hover:bg-[#6e93f7]/5 text-white font-semibold text-sm hover:scale-[1.03] transition-all duration-300 focus-visible:outline-none"
-            >
-              <Download size={15} className="group-hover:-translate-y-0.5 transition-transform duration-300" />
-              <span>Download Resume</span>
-            </a>
+            <DownloadButton onClick={handleDownload} />
           </div>
         </motion.div>
 
@@ -202,8 +204,8 @@ const Home = () => {
             <motion.img 
               src={spacemanImg} 
               alt="Waving Astronaut" 
-              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(139,92,246,0.25)] mix-blend-screen" 
-              style={{ mixBlendMode: 'screen' }}
+              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(139,92,246,0.25)] mix-blend-normal" 
+              style={{ mixBlendMode: 'normal' }}
               animate={{ y: [0, -15, 0] }}
               transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
             />

@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Nav from './components/Nav';
-import Starfield from './components/Starfield';
+import ParticleBackground from './components/ParticleBackground';
 import SocialDock from './components/SocialDock';
 import PageTransition from './components/PageTransition';
 
@@ -34,8 +34,8 @@ function App() {
   return (
     <HashRouter>
       <div className="relative min-h-screen text-gray-200 overflow-x-hidden font-sans selection:bg-[#ff8a65]/30 selection:text-white pb-10 md:pl-14">
-        {/* Starfield parallax canvas background */}
-        <Starfield />
+        {/* Global Particles canvas background */}
+        <ParticleBackground />
 
         {/* Global floating social dock */}
         <SocialDock />

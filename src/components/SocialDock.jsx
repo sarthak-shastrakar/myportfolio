@@ -8,41 +8,36 @@ const socials = [
     name: 'GitHub',
     icon: Github,
     url: 'https://github.com/sarthak-shastrakar',
-    glowColor: 'rgba(255,255,255,0.35)',
-    hoverText: 'hover:text-white',
-    hoverBorder: 'hover:border-white/40',
+    glowStart: 'rgba(80, 80, 80, 0.8)',
+    glowEnd: 'rgba(200, 200, 200, 0.8)',
   },
   {
     name: 'LinkedIn',
     icon: Linkedin,
     url: 'https://linkedin.com/in/sarthak-shastrakar',
-    glowColor: 'rgba(110,147,247,0.5)',
-    hoverText: 'hover:text-[#6e93f7]',
-    hoverBorder: 'hover:border-[#6e93f7]/40',
+    glowStart: 'rgba(10, 102, 194, 0.8)',
+    glowEnd: 'rgba(85, 178, 255, 0.8)',
   },
   {
     name: 'Naukri',
     icon: FileText,
     url: 'https://www.naukri.com/',
-    glowColor: 'rgba(45,212,191,0.5)',
-    hoverText: 'hover:text-[#2dd4bf]',
-    hoverBorder: 'hover:border-[#2dd4bf]/40',
+    glowStart: 'rgba(3, 142, 159, 0.8)',
+    glowEnd: 'rgba(45, 212, 191, 0.8)',
   },
   {
     name: 'Email',
     icon: Mail,
     url: 'mailto:sarthakshastrakar@gmail.com',
-    glowColor: 'rgba(255,138,101,0.5)',
-    hoverText: 'hover:text-[#ff8a65]',
-    hoverBorder: 'hover:border-[#ff8a65]/40',
+    glowStart: 'rgba(200, 60, 30, 0.8)',
+    glowEnd: 'rgba(255, 138, 101, 0.8)',
   },
   {
     name: 'Phone',
     icon: Phone,
     url: 'tel:+919876543210',
-    glowColor: 'rgba(56,189,248,0.5)',
-    hoverText: 'hover:text-[#38bdf8]',
-    hoverBorder: 'hover:border-[#38bdf8]/40',
+    glowStart: 'rgba(2, 132, 199, 0.8)',
+    glowEnd: 'rgba(56, 189, 248, 0.8)',
   },
 ];
 
@@ -68,26 +63,26 @@ const SocialDock = () => {
                 initial={{ opacity: 0, x: -18 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 + i * 0.07, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ scale: 1.15, x: 2 }}
-                whileTap={{ scale: 0.92 }}
-                className={`
-                  w-9 h-9 rounded-full flex items-center justify-center
-                  border border-white/10 text-gray-500
-                  bg-[#0b1020]/60 backdrop-blur-sm
-                  transition-colors duration-300 focus-visible:outline-none
-                  ${social.hoverText} ${social.hoverBorder}
-                `}
+                className="social-bloom-btn mb-2"
                 style={{
-                  '--glow': social.glowColor,
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.boxShadow = `0 0 12px ${social.glowColor}, 0 0 24px ${social.glowColor.replace('0.5', '0.18')}`;
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.boxShadow = 'none';
+                  '--glow-start': social.glowStart,
+                  '--glow-end': social.glowEnd,
                 }}
               >
-                <Icon size={16} />
+                <div className="bloom-container">
+                  <div className="button-container-main">
+                    <div className="button-inner">
+                      <div className="back" />
+                      <div className="front">
+                        <Icon size={12} className="svg" />
+                      </div>
+                    </div>
+                    <div className="button-glass">
+                      <div className="back" />
+                      <div className="front" />
+                    </div>
+                  </div>
+                </div>
               </motion.a>
             );
           })}
@@ -109,9 +104,26 @@ const SocialDock = () => {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={social.name}
-                className="w-9 h-9 rounded-full flex items-center justify-center border border-white/5 text-gray-300 bg-white/5 transition-all duration-200 hover:scale-110"
+                className="social-bloom-btn mx-1"
+                style={{
+                  '--glow-start': social.glowStart,
+                  '--glow-end': social.glowEnd,
+                }}
               >
-                <Icon size={15} />
+                <div className="bloom-container scale-[0.85]">
+                  <div className="button-container-main">
+                    <div className="button-inner">
+                      <div className="back" />
+                      <div className="front">
+                        <Icon size={12} className="svg" />
+                      </div>
+                    </div>
+                    <div className="button-glass">
+                      <div className="back" />
+                      <div className="front" />
+                    </div>
+                  </div>
+                </div>
               </a>
             );
           })}

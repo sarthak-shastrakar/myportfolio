@@ -181,7 +181,7 @@ const Skills = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: skillIdx * 0.05 }}
                             whileHover={{ scale: 1.05 }}
-                            className="flex items-center gap-4 p-3 rounded-xl border border-white/5 bg-[#06080f]/40 relative group cursor-pointer transition-colors duration-300 hover:border-white/10"
+                            className="flex items-center gap-4 p-3 rounded-xl border border-white/5 bg-[#0a0b14]/40 relative group cursor-pointer transition-colors duration-300 hover:border-white/10"
                             onMouseEnter={(e) => {
                               e.currentTarget.style.boxShadow = `0 0 14px ${glow}`;
                               e.currentTarget.style.borderColor = color;

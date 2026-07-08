@@ -41,87 +41,7 @@ const certificates = [
   },
 ];
 
-/* ── Floating Particles Background Component ────────────────────────────── */
-const ParticlesBg = () => {
-  const canvasRef = useRef(null);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animId;
-
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
-
-    const handleResize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    const dots = [];
-    const count = 75;
-
-    for (let i = 0; i < count; i++) {
-      dots.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 2 + 1.5, // 1.5 - 3.5px
-        speed: Math.random() * 0.45 + 0.25, // 0.25 - 0.7px/frame
-        angle: Math.random() * Math.PI * 2,
-        opacity: Math.random() * 0.45 + 0.15,
-        pulseSpeed: Math.random() * 0.015 + 0.003,
-        dir: Math.random() > 0.5 ? 1 : -1
-      });
-    }
-
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const loop = () => {
-      ctx.clearRect(0, 0, w, h);
-
-      dots.forEach((d) => {
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${d.opacity})`;
-        ctx.fill();
-
-        if (!isReduced) {
-          d.x += Math.cos(d.angle) * d.speed;
-          d.y += Math.sin(d.angle) * d.speed;
-
-          if (d.x < -10) d.x = w + 10;
-          if (d.x > w + 10) d.x = -10;
-          if (d.y < -10) d.y = h + 10;
-          if (d.y > h + 10) d.y = -10;
-
-          d.opacity += d.pulseSpeed * d.dir;
-          if (d.opacity > 0.65) {
-            d.opacity = 0.65;
-            d.dir = -1;
-          } else if (d.opacity < 0.1) {
-            d.opacity = 0.1;
-            d.dir = 1;
-          }
-        }
-      });
-
-      if (!isReduced) {
-        animId = requestAnimationFrame(loop);
-      }
-    };
-
-    loop();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animId);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
-};
 
 /* ── Main Certification Component ────────────────────────────────────────── */
 const Certification = () => {
@@ -142,8 +62,7 @@ const Certification = () => {
   return (
     <div className="flex flex-col w-full h-full relative pt-6 pb-24 text-left overflow-visible select-none">
 
-      {/* Particles Background Layer */}
-      <ParticlesBg />
+      {/* Particles Background Layer Removed */}
 
       {/* ── Section Header ── */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 relative z-10">
@@ -182,8 +101,8 @@ const Certification = () => {
         {/* ── ROW 1: Scrolling Left ── */}
         <div className="marquee-container relative w-full overflow-hidden py-3">
           {/* Masking overlay gradients for soft fade edges */}
-          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#06080f] to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#06080f] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0a0b14] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0a0b14] to-transparent z-10 pointer-events-none" />
 
           <div className="marquee-row-left gap-6 flex">
             {loopList.map((cert, idx) => (
@@ -204,13 +123,13 @@ const Certification = () => {
                 }}
               >
                 {/* Image top */}
-                <div className="w-full h-[200px] relative overflow-hidden bg-black/40">
+                <div className="w-full h-[200px] relative overflow-hidden bg-[#0a0b14]/40">
                   <img
                     src={cert.image}
                     alt={cert.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-[#0a0b14]/10 group-hover:bg-[#0a0b14]/40 transition-colors duration-300" />
 
                   {/* View label */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -221,7 +140,7 @@ const Certification = () => {
                 </div>
 
                 {/* Content bottom */}
-                <div className="p-5 flex flex-col items-start gap-2 bg-[#06080f]/90 relative z-10 h-full flex-1">
+                <div className="p-5 flex flex-col items-start gap-2 bg-[#0a0b14]/90 relative z-10 h-full flex-1">
                   <span
                     className="text-[10px] font-bold tracking-widest uppercase"
                     style={{ color: cert.color }}
@@ -247,7 +166,7 @@ const Certification = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedCert(null)}
-            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
+            className="fixed inset-0 z-50 bg-[#0a0b14]/90 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
           >
             <motion.div
               initial={{ scale: 0.92, y: 15 }}
@@ -255,12 +174,12 @@ const Certification = () => {
               exit={{ scale: 0.92, y: 15 }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full bg-[#06080f] border border-white/10 rounded-2xl overflow-hidden shadow-2xl cursor-default"
+              className="relative max-w-4xl w-full bg-[#0a0b14] border border-white/10 rounded-2xl overflow-hidden shadow-2xl cursor-default"
             >
               {/* Close button */}
               <button
                 onClick={() => setSelectedCert(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/60 text-gray-400 hover:text-white hover:bg-black/90 transition-colors duration-200 z-10 focus-visible:outline-none"
+                className="absolute top-4 right-4 p-2 rounded-full bg-[#0a0b14]/60 text-gray-400 hover:text-white hover:bg-[#0a0b14]/90 transition-colors duration-200 z-10 focus-visible:outline-none"
               >
                 <X size={20} />
               </button>
@@ -273,7 +192,7 @@ const Certification = () => {
                 />
               </div>
 
-              <div className="p-6 bg-[#06080f] flex items-center justify-between gap-4">
+              <div className="p-6 bg-[#0a0b14] flex items-center justify-between gap-4">
                 <div className="text-left space-y-1">
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border tracking-wider uppercase bg-white/5 border-white/10 text-white">
                     {selectedCert.issuer}

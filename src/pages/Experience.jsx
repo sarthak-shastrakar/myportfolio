@@ -84,7 +84,7 @@ const TimelineNode = ({ color }) => (
     />
     {/* Inner solid dot */}
     <div
-      className="w-4 h-4 rounded-full border-2 border-[#06080f] shadow-lg relative z-10"
+      className="w-4 h-4 rounded-full border-2 border-[#0a0b14] shadow-lg relative z-10"
       style={{
         background: color,
         boxShadow: `0 0 12px ${color}99, 0 0 24px ${color}44`,
