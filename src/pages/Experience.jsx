@@ -4,65 +4,67 @@ import { Radio, Check, Hourglass, Rocket, GraduationCap, Zap } from 'lucide-reac
 
 const experiences = [
   {
-    role: 'Full-Stack Developer Intern',
-    company: 'Cybertech Solutions',
-    duration: 'Jan 2025 — Present',
+    role: 'Backend Developer Intern',
+    company: 'AppVeda Software Technologies',
+    companyUrl: 'https://appvedasoftware.in/',
+    duration: 'Feb 2026 — Aug 2026',
     status: 'Current',
     statusIcon: Radio,
     nodeColor: '#2dd4bf',
     statusColor: 'text-[#2dd4bf] border-[#2dd4bf]/30 bg-[#2dd4bf]/10',
     bullets: [
-      'Developed and optimized MERN-stack administrative interfaces, boosting load speeds by 24%.',
-      'Configured custom middleware validations, securing API endpoints and preventing unauthorized data leaks.',
-      'Designed real-time update notifications utilizing socket protocols.',
+      'Built and maintained REST APIs using Node.js and Express.js for live production projects.',
+      'Managed database operations and schema design using MongoDB for industry-level applications.',
+      'Deployed and managed backend services on a VPS server via Hostinger — handled server config, environment setup, and uptime monitoring.',
+      'Worked on server-side logic, API security, and data validation for real client-facing systems.',
     ],
-    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Socket.io'],
+    tech: ['Node.js', 'Express.js', 'MongoDB', 'REST API', 'Hostinger', 'VPS'],
   },
   {
-    role: 'Freelance Software Developer',
-    company: 'CosmoCraft Tech',
-    duration: 'Jun 2024 — Dec 2024',
+    role: 'Full Stack Web Developer Intern',
+    company: 'Credora',
+    duration: 'May 2025 — Jun 2025',
     status: 'Completed',
     statusIcon: Check,
     nodeColor: '#6e93f7',
     statusColor: 'text-[#6e93f7] border-[#6e93f7]/30 bg-[#6e93f7]/10',
     bullets: [
-      'Built and delivered custom responsive websites for local enterprise partners using Tailwind and React.',
-      'Constructed modular database schemas, organizing product inventories with clean relations.',
-      'Managed cloud setup and deployment configurations, achieving 99.9% uptime.',
+      'Contributed to building web applications using the MERN stack (MongoDB, Express.js, React.js, Node.js).',
+      'Worked on both frontend UI components and backend API integration in a remote team environment.',
+      'Gained hands-on experience with full-stack development workflow — from feature planning to deployment.',
     ],
-    tech: ['React', 'PostgreSQL', 'Tailwind CSS', 'Git', 'Nginx'],
+    tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Git'],
   },
-  {
-    role: 'B.E. Computer Engineering',
-    company: 'Pune University',
-    duration: 'Aug 2023 — Present',
-    status: 'Ongoing',
-    statusIcon: GraduationCap,
-    nodeColor: '#a78bfa',
-    statusColor: 'text-[#a78bfa] border-[#a78bfa]/30 bg-[#a78bfa]/10',
-    bullets: [
-      'Studying core computer architecture, database management systems (DBMS), and analysis of algorithms.',
-      'Maintained consistent top-tier academic grades in programming subjects.',
-      'Active coordinator in technical events and college-level coding hackathons.',
-    ],
-    tech: ['C++', 'Java', 'SQL', 'Data Structures', 'Algorithms'],
-  },
-  {
-    role: 'Currently Exploring',
-    company: 'Self-Directed Learning',
-    duration: '2025 — Ongoing',
-    status: 'Learning',
-    statusIcon: Zap,
-    nodeColor: '#ff8a65',
-    statusColor: 'text-[#ff8a65] border-[#ff8a65]/30 bg-[#ff8a65]/10',
-    bullets: [
-      'Cloud-Native Architectures: Docker, Kubernetes & microservices orchestration.',
-      'Advanced React Patterns: Server Components, concurrent rendering & performance tuning.',
-      'AI & LLM Integration: Building assistant pipelines with OpenAI & LangChain.',
-    ],
-    tech: ['Docker', 'Kubernetes', 'AWS', 'LangChain', 'TypeScript'],
-  },
+  // {
+  //   role: 'B.E. Computer Engineering',
+  //   company: 'Pune University',
+  //   duration: 'Aug 2023 — Present',
+  //   status: 'Ongoing',
+  //   statusIcon: GraduationCap,
+  //   nodeColor: '#a78bfa',
+  //   statusColor: 'text-[#a78bfa] border-[#a78bfa]/30 bg-[#a78bfa]/10',
+  //   bullets: [
+  //     'Studying core computer architecture, database management systems (DBMS), and analysis of algorithms.',
+  //     'Maintained consistent top-tier academic grades in programming subjects.',
+  //     'Active coordinator in technical events and college-level coding hackathons.',
+  //   ],
+  //   tech: ['C++', 'Java', 'SQL', 'Data Structures', 'Algorithms'],
+  // },
+  // {
+  //   role: 'Currently Exploring',
+  //   company: 'Self-Directed Learning',
+  //   duration: '2025 — Ongoing',
+  //   status: 'Learning',
+  //   statusIcon: Zap,
+  //   nodeColor: '#ff8a65',
+  //   statusColor: 'text-[#ff8a65] border-[#ff8a65]/30 bg-[#ff8a65]/10',
+  //   bullets: [
+  //     'Cloud-Native Architectures: Docker, Kubernetes & microservices orchestration.',
+  //     'Advanced React Patterns: Server Components, concurrent rendering & performance tuning.',
+  //     'AI & LLM Integration: Building assistant pipelines with OpenAI & LangChain.',
+  //   ],
+  //   tech: ['Docker', 'Kubernetes', 'AWS', 'LangChain', 'TypeScript'],
+  // },
 ];
 
 // Animated node marker with pulsing glow ring
@@ -179,11 +181,10 @@ const Experience = () => {
                   className="w-full sm:w-[calc(50%-36px)] ml-14 sm:ml-0"
                 >
                   <div
-                    className={`glass p-5 rounded-2xl border transition-colors duration-300 space-y-4 ${
-                      isActive
-                        ? 'border-[#2dd4bf]/25 shadow-[0_0_24px_rgba(45,212,191,0.08)]'
-                        : 'border-white/5 hover:border-white/15'
-                    }`}
+                    className={`glass p-5 rounded-2xl border transition-colors duration-300 space-y-4 ${isActive
+                      ? 'border-[#2dd4bf]/25 shadow-[0_0_24px_rgba(45,212,191,0.08)]'
+                      : 'border-white/5 hover:border-white/15'
+                      }`}
                   >
                     {/* Role Header */}
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-2">

@@ -34,8 +34,8 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Hide Scrollbar (all browsers) ────────────────────────────────────────── */
-::-webkit-scrollbar {
+/* ── Hide Scrollbar globally (all browsers) except custom ones ────────────── */
+*:not(.cards-row-scroll):not(.card-scroll)::-webkit-scrollbar {
   display: none;
   width: 0 !important;
   height: 0 !important;

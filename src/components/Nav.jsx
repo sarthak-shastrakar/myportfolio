@@ -195,22 +195,7 @@ const Nav = () => {
               </motion.span>
             </span>
 
-            {/* Pulsing green dot */}
-            <motion.span
-              style={{
-                display:         'inline-block',
-                width:           8,
-                height:          8,
-                borderRadius:    '50%',
-                background:      '#2dd4bf',
-                flexShrink:      0,
-              }}
-              animate={reduced ? {} : {
-                opacity: [1, 0.3, 1],
-                scale:   [1, 1.4, 1],
-              }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            />
+
           </motion.div>
         </NavLink>
 

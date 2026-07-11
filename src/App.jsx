@@ -33,7 +33,7 @@ const AnimatedRoutes = () => {
 function App() {
   return (
     <HashRouter>
-      <div className="relative min-h-screen text-gray-200 overflow-x-hidden font-sans selection:bg-[#ff8a65]/30 selection:text-white pb-10 md:pl-14">
+      <div className="relative min-h-screen text-gray-200 font-sans selection:bg-[#ff8a65]/30 selection:text-white pb-10 md:pl-14">
         {/* Global Particles canvas background */}
         <ParticleBackground />
 

@@ -14,9 +14,9 @@ const About = () => {
 
   return (
     <div className="flex flex-col gap-12 w-full mt-6">
-      
+
       {/* Page Title */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -29,21 +29,21 @@ const About = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        
+
         {/* LEFT COLUMN: Mascot & Details */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="lg:col-span-4 flex flex-col items-center gap-6 glass p-8 rounded-3xl border border-white/5 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#ff8a65]/10 to-transparent blur-xl pointer-events-none" />
-          
+
           {/* Astronaut floating */}
           <div className="w-full max-w-[200px] flex items-center justify-center animate-float-slow">
             <Astronaut pose="waving" className="w-full h-full" />
           </div>
-          
+
           <div className="text-center">
             <h3 className="font-serif text-xl font-bold text-white">Sarthak Shastrakar</h3>
             <p className="text-sm text-gray-400 font-mono mt-1.5 flex items-center justify-center gap-2">
@@ -77,29 +77,29 @@ const About = () => {
 
         {/* RIGHT COLUMN: Bio & Contact */}
         <div className="lg:col-span-8 flex flex-col gap-8">
-          
+
           {/* Main Bio Panel */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="glass p-8 rounded-3xl border border-white/5 text-left space-y-6"
           >
-            <h3 className="font-serif text-2xl font-bold text-white">About Me</h3>
-            
+            {/* <h3 className="font-serif text-2xl font-bold text-white">About Me</h3> */}
+
             <div className="text-gray-300 leading-relaxed font-sans space-y-4">
               <p>
                 Hi, I'm Sarthak Shastrakar — a B.Tech Computer Engineering student from Nagpur (2022–2026), currently interning as a Backend Developer at Appveda Software.
               </p>
-              
+
               <p>
                 I build full-stack web apps using the MERN stack. Over the last couple of years, I've shipped projects like a real-time video conferencing app, an AI-powered career coaching platform built with Gemini API, and a personal AI chatbot — all built from scratch.
               </p>
-              
+
               <p>
                 At Appveda, I work primarily on Node.js backends — building APIs, handling server-side logic.
               </p>
-              
+
               <p>
                 I like writing code that's clean, building things that actually work, and learning whatever the next project needs me to learn.
               </p>
@@ -107,14 +107,14 @@ const About = () => {
           </motion.div>
 
           {/* Contact & Socials Panel */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
             className="glass p-8 rounded-3xl border border-white/5 text-left space-y-6"
           >
             <h3 className="font-serif text-xl font-bold text-white">Contact & Socials</h3>
-            
+
             <div className="flex flex-wrap gap-3">
               {contacts.map((contact, index) => {
                 const Icon = contact.icon;

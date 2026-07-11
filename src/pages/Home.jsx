@@ -9,9 +9,9 @@ import DownloadButton from '../components/DownloadButton';
 /* ── Rotating Roles with blinking cursor ─────────────────────────────────── */
 const ROLES = [
   'Full-Stack MERN Developer',
+  'Backend Developer (Node.js)',
   'React & Node.js Engineer',
-  'UI/UX Focused Developer',
-  'Open Source Contributor',
+  'Open to Freelance Projects',
 ];
 
 const TypingSubtitle = () => {
@@ -201,10 +201,10 @@ const Home = () => {
             <div className="absolute w-[60%] h-[60%] rounded-full border border-white/5 animate-pulse" />
 
             {/* Astronaut Image */}
-            <motion.img 
-              src={spacemanImg} 
-              alt="Waving Astronaut" 
-              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(139,92,246,0.25)] mix-blend-normal" 
+            <motion.img
+              src={spacemanImg}
+              alt="Waving Astronaut"
+              className="w-full h-full object-contain drop-shadow-[0_0_40px_rgba(139,92,246,0.25)] mix-blend-normal"
               style={{ mixBlendMode: 'normal' }}
               animate={{ y: [0, -15, 0] }}
               transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut" }}
