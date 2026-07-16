@@ -1,19 +1,36 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { Mail, FileText, GraduationCap, MapPin, Code2, Phone } from 'lucide-react';
 import { GithubIcon as Github, LinkedinIcon as Linkedin } from '../components/icons';
 import Astronaut from '../components/Astronaut';
 
 const About = () => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set((clientX / innerWidth - 0.5) * 2);
+    mouseY.set((clientY / innerHeight - 0.5) * 2);
+  };
+
+  const springConfig = { damping: 25, stiffness: 120 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  const astroX = useTransform(smoothX, [-1, 1], [15, -15]);
+  const astroY = useTransform(smoothY, [-1, 1], [15, -15]);
+
   const contacts = [
-    { name: 'Email', icon: Mail, url: 'mailto:sarthakshastrakar@gmail.com', value: 'sarthakshastrakar@gmail.com', external: false },
+    { name: 'Email', icon: Mail, url: 'mailto:sarthakshastrakar9@gmail.com', value: 'sarthakshastrakar9@gmail.com', external: false },
     { name: 'GitHub', icon: Github, url: 'https://github.com/sarthak-shastrakar', value: 'github.com/sarthak-shastrakar', external: true },
     { name: 'LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/sarthak-shastrakar', value: 'linkedin.com/in/sarthak-shastrakar', external: true },
-    { name: 'Naukri', icon: FileText, url: 'https://www.naukri.com/', value: 'Naukri Profile', external: true },
+    { name: 'Naukri', icon: FileText, url: 'https://www.naukri.com/mnjuser/profile?id=&altresid', value: 'Naukri Profile', external: true },
   ];
 
   return (
-    <div className="flex flex-col gap-12 w-full mt-6">
+    <div className="flex flex-col gap-12 w-full mt-6" onMouseMove={handleMouseMove}>
 
       {/* Page Title */}
       <motion.div
@@ -35,6 +52,7 @@ const About = () => {
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ x: astroX, y: astroY }}
           className="lg:col-span-4 flex flex-col items-center gap-6 glass p-8 rounded-3xl border border-white/5 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#ff8a65]/10 to-transparent blur-xl pointer-events-none" />

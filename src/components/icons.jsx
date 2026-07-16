@@ -38,3 +38,17 @@ export const LinkedinIcon = ({ size = 24, className = '', style = {} }) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 );
+
+export const NaukriIcon = ({ size = 24, className = '', style = {} }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+    style={style}
+  >
+    <path d="M14.937 19.344l-5.632-8.563V19.344H6.386V4.656h2.923l5.627 8.567V4.656h2.919v14.688z"/>
+  </svg>
+);

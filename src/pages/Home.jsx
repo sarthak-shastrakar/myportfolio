@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, Download } from 'lucide-react';
 import spacemanImg from '../../media/astronout_3d.a026954aa7516298baee.png';
 import resumePdf from '../../media/Sarthak_Fullstack_developer_new.32a16d90b49080b023f3.pdf';
@@ -110,6 +110,25 @@ const CountUp = ({ target, suffix = '' }) => {
 
 /* ── Main Home Component ─────────────────────────────────────────────────── */
 const Home = () => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set((clientX / innerWidth - 0.5) * 2);
+    mouseY.set((clientY / innerHeight - 0.5) * 2);
+  };
+
+  const springConfig = { damping: 25, stiffness: 120 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  const textX = useTransform(smoothX, [-1, 1], [-15, 15]);
+  const textY = useTransform(smoothY, [-1, 1], [-15, 15]);
+  const astroX = useTransform(smoothX, [-1, 1], [25, -25]);
+  const astroY = useTransform(smoothY, [-1, 1], [25, -25]);
+
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = resumePdf;
@@ -120,7 +139,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col gap-16 w-full mt-4 md:mt-8">
+    <div className="flex flex-col gap-16 w-full mt-4 md:mt-8" onMouseMove={handleMouseMove}>
 
 
 
@@ -133,6 +152,7 @@ const Home = () => {
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          style={{ x: textX, y: textY }}
         >
           {/* 🟢 Available badge */}
           <motion.div
@@ -190,6 +210,7 @@ const Home = () => {
           initial={{ opacity: 0, x: 30, scale: 0.92 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          style={{ x: astroX, y: astroY }}
         >
           <div className="relative w-full max-w-[420px] lg:max-w-[480px] aspect-square flex items-center justify-center">
 

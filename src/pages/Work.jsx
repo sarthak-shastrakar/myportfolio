@@ -144,74 +144,74 @@ const Work = () => {
           ref={scrollRef}
           className="w-full overflow-x-auto snap-x snap-mandatory work-hide-scrollbar"
         >
-        <div className="flex gap-6 px-1" style={{ width: 'max-content' }}>
-          <AnimatePresence mode="popLayout">
-            {projects.map((project, idx) => (
-              <motion.div
-                key={project.title}
-                layout
-                initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.8, x: -50 }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="card-glass snap-center shrink-0 w-[300px] md:w-[320px] h-[460px] flex flex-col relative transition-all duration-300 rounded-2xl overflow-hidden"
-              >
-                {/* ── Scrollable Inner Content ── */}
-                <div className="flex-1 overflow-y-auto card-scroll p-6 pb-4">
+          <div className="flex gap-6 px-1" style={{ width: 'max-content' }}>
+            <AnimatePresence mode="popLayout">
+              {projects.map((project, idx) => (
+                <motion.div
+                  key={project.title}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9, x: 50 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, x: -50 }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  className="card-glass snap-center shrink-0 w-[300px] md:w-[320px] h-[460px] flex flex-col relative transition-all duration-300 rounded-2xl overflow-hidden"
+                >
+                  {/* ── Scrollable Inner Content ── */}
+                  <div className="flex-1 overflow-y-auto card-scroll p-6 pb-4">
 
-                  {/* Title */}
-                  <h3 className="text-white font-bold text-[17px] text-center mb-4 leading-snug">
-                    {project.title}
-                  </h3>
+                    {/* Title */}
+                    <h3 className="text-white font-bold text-[17px] text-center mb-4 leading-snug">
+                      {project.title}
+                    </h3>
 
-                  {/* Description */}
-                  <p className="text-[#d1d5db] text-[13px] text-center leading-relaxed mb-5">
-                    {project.description}
-                  </p>
+                    {/* Description */}
+                    <p className="text-[#d1d5db] text-[13px] text-center leading-relaxed mb-5">
+                      {project.description}
+                    </p>
 
-                  {/* Tech Tags */}
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {project.tags.map(tag => (
-                      <span
-                        key={tag}
-                        className="text-[11px] px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[#93c5fd] font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    {/* Tech Tags */}
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {project.tags.map(tag => (
+                        <span
+                          key={tag}
+                          className="text-[11px] px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[#93c5fd] font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Extra bottom space so content doesn't hide behind footer */}
+                    <div className="h-4" />
                   </div>
 
-                  {/* Extra bottom space so content doesn't hide behind footer */}
-                  <div className="h-4" />
-                </div>
+                  {/* ── Footer (always visible at bottom) ── */}
+                  <div className="shrink-0 px-6 py-4 border-t border-white/[0.06] flex flex-row items-center justify-between bg-[rgba(11,16,32,0.4)] backdrop-blur-sm">
+                    <a
+                      href={project.liveUrl !== "YOUR_LIVE_URL" ? project.liveUrl : "#"}
+                      target={project.liveUrl !== "YOUR_LIVE_URL" ? "_blank" : "_self"}
+                      rel="noreferrer"
+                      className="px-5 py-2 rounded-lg text-white font-bold text-sm border-b-[3px] border-[#6e93f7] transition-colors"
+                      style={{ background: 'rgba(30,40,60,0.8)' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(50,65,90,0.9)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(30,40,60,0.8)'}
+                    >
+                      Visit
+                    </a>
 
-                {/* ── Footer (always visible at bottom) ── */}
-                <div className="shrink-0 px-6 py-4 border-t border-white/[0.06] flex flex-row items-center justify-between bg-[rgba(11,16,32,0.4)] backdrop-blur-sm">
-                  <a
-                    href={project.liveUrl !== "YOUR_LIVE_URL" ? project.liveUrl : "#"}
-                    target={project.liveUrl !== "YOUR_LIVE_URL" ? "_blank" : "_self"}
-                    rel="noreferrer"
-                    className="px-5 py-2 rounded-lg text-white font-bold text-sm border-b-[3px] border-[#6e93f7] transition-colors"
-                    style={{ background: 'rgba(30,40,60,0.8)' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(50,65,90,0.9)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(30,40,60,0.8)'}
-                  >
-                    Visit
-                  </a>
-
-                  <a
-                    href={project.githubUrl !== "YOUR_GITHUB_URL" ? project.githubUrl : "#"}
-                    target={project.githubUrl !== "YOUR_GITHUB_URL" ? "_blank" : "_self"}
-                    rel="noreferrer"
-                    className="text-white/60 hover:text-white transition-colors p-2"
-                  >
-                    <Github size={24} />
-                  </a>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+                    <a
+                      href={project.githubUrl !== "YOUR_GITHUB_URL" ? project.githubUrl : "#"}
+                      target={project.githubUrl !== "YOUR_GITHUB_URL" ? "_blank" : "_self"}
+                      rel="noreferrer"
+                      className="text-white/60 hover:text-white transition-colors p-2"
+                    >
+                      <Github size={24} />
+                    </a>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
 

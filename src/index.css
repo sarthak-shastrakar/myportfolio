@@ -112,6 +112,10 @@ body {
   animation: shimmer-sweep 2.8s ease-in-out infinite;
 }
 
+.btn-shimmer:hover {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(110, 147, 247, 0.2);
+}
+
 /* ── Glass Utilities ──────────────────────────────────────────────────────── */
 .glass {
   background: rgba(11, 16, 32, 0.45);
@@ -136,8 +140,9 @@ body {
 
 .glass-card:hover {
   background: rgba(15, 23, 42, 0.6);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -12px rgba(110, 147, 247, 0.25);
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 25px 50px -12px rgba(110, 147, 247, 0.3), 0 0 20px rgba(110, 147, 247, 0.1);
+  border: 1px solid rgba(110, 147, 247, 0.25);
 }
 
 /* Stat cards hover glow variants */
