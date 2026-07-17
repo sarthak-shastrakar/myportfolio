@@ -1,23 +1,252 @@
-export default function ParticleBackground() {
+import React, { useEffect, useRef, useCallback } from 'react';
+
+/* ── Shooting Star Canvas ─────────────────────────────────────────────────── */
+const ShootingStarsCanvas = () => {
+  const canvasRef = useRef(null);
+  const starsRef = useRef([]);
+  const animRef = useRef(null);
+
+  const spawnStar = useCallback((canvas) => {
+    const x = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
+    const y = Math.random() * canvas.height * 0.4;
+    starsRef.current.push({
+      x, y, len: 0,
+      maxLen: 120 + Math.random() * 100,
+      speed: 8 + Math.random() * 6,
+      opacity: 1,
+      angle: 215 + (Math.random() - 0.5) * 20,
+    });
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const resize = () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    // Spawn first star after 2s, then every 5-9s
+    let spawnTimer;
+    const scheduleSpawn = () => {
+      const delay = 5000 + Math.random() * 4000;
+      spawnTimer = setTimeout(() => {
+        spawnStar(canvas);
+        scheduleSpawn();
+      }, delay);
+    };
+    setTimeout(() => { spawnStar(canvas); scheduleSpawn(); }, 2000);
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const rad = (215) * Math.PI / 180;
+      const dx = Math.cos(rad);
+      const dy = Math.sin(rad);
+
+      starsRef.current = starsRef.current.filter(s => s.opacity > 0.01);
+
+      for (const s of starsRef.current) {
+        s.len = Math.min(s.len + s.speed, s.maxLen);
+        if (s.len >= s.maxLen) s.opacity *= 0.92;
+
+        const tailX = s.x - dx * s.len;
+        const tailY = s.y - dy * s.len;
+
+        const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+        grad.addColorStop(0, `rgba(255,255,255,0)`);
+        grad.addColorStop(0.7, `rgba(255,255,255,${s.opacity * 0.6})`);
+        grad.addColorStop(1, `rgba(255,255,255,${s.opacity})`);
+
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(s.x, s.y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Head glow dot
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,210,255,${s.opacity})`;
+        ctx.fill();
+
+        // Advance head position
+        s.x += dx * s.speed;
+        s.y += dy * s.speed;
+      }
+
+      animRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      clearTimeout(spawnTimer);
+      cancelAnimationFrame(animRef.current);
+    };
+  }, [spawnStar]);
+
   return (
-    <div
+    <canvas
+      ref={canvasRef}
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        zIndex: -1,
+        position: 'absolute', inset: 0,
+        width: '100%', height: '100%',
         pointerEvents: 'none',
-        overflow: 'hidden',
-        background: 'radial-gradient(ellipse at bottom, #0d1b2a 0%, #0a0b14 100%)',
       }}
       aria-hidden="true"
-    >
-      <div id="stars" />
-      <div id="stars2" />
-      <div id="stars3" />
+    />
+  );
+};
 
+/* ── Cursor Particle Canvas ───────────────────────────────────────────────── */
+const CursorParticles = () => {
+  const canvasRef = useRef(null);
+  const particlesRef = useRef([]);
+  const mouseRef = useRef({ x: -999, y: -999 });
+  const animRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    // Skip on touch devices
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    const ctx = canvas.getContext('2d');
+
+    const resize = () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    const onMove = (e) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+      // Spawn 1-2 particles per move
+      for (let i = 0; i < 2; i++) {
+        particlesRef.current.push({
+          x: e.clientX + (Math.random() - 0.5) * 8,
+          y: e.clientY + (Math.random() - 0.5) * 8,
+          vx: (Math.random() - 0.5) * 1.2,
+          vy: (Math.random() - 0.5) * 1.2 - 0.5,
+          life: 1,
+          size: Math.random() * 2 + 1,
+          color: Math.random() > 0.5 ? '110,147,247' : '139,92,246',
+        });
+      }
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particlesRef.current = particlesRef.current.filter(p => p.life > 0.02);
+      for (const p of particlesRef.current) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life *= 0.92;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.color}, ${p.life * 0.6})`;
+        ctx.fill();
+      }
+      animRef.current = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(animRef.current);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'fixed', inset: 0,
+        width: '100%', height: '100%',
+        pointerEvents: 'none',
+        zIndex: 2,
+      }}
+      aria-hidden="true"
+    />
+  );
+};
+
+/* ── Main ParticleBackground ──────────────────────────────────────────────── */
+export default function ParticleBackground() {
+  return (
+    <>
+      {/* Layer 0: Deep space base */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: -1,
+          pointerEvents: 'none',
+          overflow: 'hidden',
+          background: 'radial-gradient(ellipse at 50% 100%, #0d1b2a 0%, #0a0b14 60%)',
+        }}
+        aria-hidden="true"
+      >
+        {/* Layer 1: CSS star fields */}
+        <div id="stars"  />
+        <div id="stars2" />
+        <div id="stars3" />
+
+        {/* Layer 2: Nebula glow blobs */}
+        <div
+          className="animate-nebula"
+          style={{
+            position: 'absolute',
+            top: '10%', left: '15%',
+            width: 600, height: 400,
+            background: 'radial-gradient(ellipse, rgba(110,147,247,0.18) 0%, transparent 70%)',
+            filter: 'blur(60px)',
+            borderRadius: '50%',
+            animationDelay: '0s',
+          }}
+        />
+        <div
+          className="animate-nebula"
+          style={{
+            position: 'absolute',
+            top: '50%', right: '10%',
+            width: 500, height: 350,
+            background: 'radial-gradient(ellipse, rgba(139,92,246,0.14) 0%, transparent 70%)',
+            filter: 'blur(70px)',
+            borderRadius: '50%',
+            animationDelay: '-5s',
+          }}
+        />
+        <div
+          className="animate-nebula"
+          style={{
+            position: 'absolute',
+            bottom: '5%', left: '35%',
+            width: 700, height: 300,
+            background: 'radial-gradient(ellipse, rgba(45,212,191,0.08) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+            borderRadius: '50%',
+            animationDelay: '-10s',
+          }}
+        />
+
+        {/* Layer 3: Shooting stars canvas */}
+        <ShootingStarsCanvas />
+      </div>
+
+      {/* Layer 4: Cursor particles (fixed, above everything) */}
+      <CursorParticles />
+
+      {/* Inline styles for the star layers */}
       <style>{`
         @keyframes animStar {
           from { transform: translateY(0px); }
@@ -25,8 +254,7 @@ export default function ParticleBackground() {
         }
 
         #stars {
-          width: 1px;
-          height: 1px;
+          width: 1px; height: 1px;
           background: transparent;
           box-shadow:
             501px 811px #fff, 1450px 1324px #fff, 1093px 1780px #fff, 1469px 678px #fff,
@@ -151,18 +379,11 @@ export default function ParticleBackground() {
             642px 1995px #fff, 1061px 1726px #fff, 1708px 115px #fff, 1233px 1305px #fff,
             637px 1786px #fff, 1730px 603px #fff, 75px 1240px #fff, 1704px 1326px #fff;
           animation: animStar 50s linear infinite;
-          position: absolute;
-          top: 0;
-          left: 0;
+          position: absolute; top: 0; left: 0;
         }
         #stars::after {
-          content: " ";
-          position: absolute;
-          top: 2000px;
-          left: 0;
-          width: 1px;
-          height: 1px;
-          background: transparent;
+          content: " "; position: absolute; top: 2000px; left: 0;
+          width: 1px; height: 1px; background: transparent;
           box-shadow:
             501px 811px #fff, 1450px 1324px #fff, 1093px 1780px #fff, 1469px 678px #fff,
             904px 741px #fff, 1160px 781px #fff, 1841px 1962px #fff, 1630px 1667px #fff,
@@ -180,9 +401,7 @@ export default function ParticleBackground() {
         }
 
         #stars2 {
-          width: 2px;
-          height: 2px;
-          background: transparent;
+          width: 2px; height: 2px; background: transparent;
           box-shadow:
             1925px 1320px #fff, 693px 1778px #fff, 1016px 711px #fff, 1171px 563px #fff,
             661px 1919px #fff, 1610px 44px #fff, 1275px 140px #fff, 1208px 1802px #fff,
@@ -235,27 +454,18 @@ export default function ParticleBackground() {
             3px 857px #fff, 292px 1201px #fff, 1343px 673px #fff, 1096px 1412px #fff,
             1520px 292px #fff, 104px 1683px #fff, 934px 1387px #fff, 314px 739px #fff;
           animation: animStar 100s linear infinite;
-          position: absolute;
-          top: 0;
-          left: 0;
+          position: absolute; top: 0; left: 0;
         }
         #stars2::after {
-          content: " ";
-          position: absolute;
-          top: 2000px;
-          left: 0;
-          width: 2px;
-          height: 2px;
-          background: transparent;
+          content: " "; position: absolute; top: 2000px; left: 0;
+          width: 2px; height: 2px; background: transparent;
           box-shadow:
             1925px 1320px #fff, 693px 1778px #fff, 1016px 711px #fff, 1171px 563px #fff,
             661px 1919px #fff, 1610px 44px #fff, 1275px 140px #fff, 1208px 1802px #fff;
         }
 
         #stars3 {
-          width: 3px;
-          height: 3px;
-          background: transparent;
+          width: 3px; height: 3px; background: transparent;
           box-shadow:
             200px 981px #fff, 1731px 521px #fff, 132px 1039px #fff, 1888px 1547px #fff,
             899px 1226px #fff, 1887px 580px #fff, 1548px 1092px #fff, 1626px 689px #fff,
@@ -283,23 +493,16 @@ export default function ParticleBackground() {
             483px 1108px #fff, 689px 986px #fff, 1279px 786px #fff, 458px 910px #fff,
             1250px 870px #fff, 785px 1654px #fff, 1543px 1757px #fff, 287px 1272px #fff;
           animation: animStar 150s linear infinite;
-          position: absolute;
-          top: 0;
-          left: 0;
+          position: absolute; top: 0; left: 0;
         }
         #stars3::after {
-          content: " ";
-          position: absolute;
-          top: 2000px;
-          left: 0;
-          width: 3px;
-          height: 3px;
-          background: transparent;
+          content: " "; position: absolute; top: 2000px; left: 0;
+          width: 3px; height: 3px; background: transparent;
           box-shadow:
             200px 981px #fff, 1731px 521px #fff, 132px 1039px #fff, 1888px 1547px #fff,
             899px 1226px #fff, 1887px 580px #fff, 1548px 1092px #fff, 1626px 689px #fff;
         }
       `}</style>
-    </div>
+    </>
   );
 }

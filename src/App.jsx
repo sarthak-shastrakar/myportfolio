@@ -1,10 +1,13 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import Lenis from 'lenis';
 import Nav from './components/Nav';
 import ParticleBackground from './components/ParticleBackground';
 import SocialDock from './components/SocialDock';
 import PageTransition from './components/PageTransition';
+import CursorSpotlight from './components/CursorSpotlight';
+import ScrollProgress from './components/ScrollProgress';
 
 // Lazy-load page components
 const Home = lazy(() => import('./pages/Home'));
@@ -13,6 +16,35 @@ const Skills = lazy(() => import('./pages/Skills'));
 const Work = lazy(() => import('./pages/Work'));
 const Experience = lazy(() => import('./pages/Experience'));
 const Certification = lazy(() => import('./pages/Certification'));
+
+/* ── Lenis smooth-scroll initialiser ─────────────────────────────────────── */
+const LenisInit = () => {
+  useEffect(() => {
+    // Skip on touch / coarse-pointer devices for performance
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      smoothTouch: false,
+    });
+
+    let rafId;
+    const raf = (time) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, []);
+
+  return null;
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -33,9 +65,19 @@ const AnimatedRoutes = () => {
 function App() {
   return (
     <HashRouter>
-      <div className="relative min-h-screen text-gray-200 font-sans selection:bg-[#ff8a65]/30 selection:text-white pb-10 md:pl-14">
+      <div className="relative min-h-screen text-gray-200 font-sans selection:bg-[#6e93f7]/30 selection:text-white pb-10 md:pl-14">
+
+        {/* Smooth scroll (desktop only) */}
+        <LenisInit />
+
         {/* Global Particles canvas background */}
         <ParticleBackground />
+
+        {/* Cursor spotlight glow */}
+        <CursorSpotlight />
+
+        {/* Scroll progress bar */}
+        <ScrollProgress />
 
         {/* Global floating social dock */}
         <SocialDock />
@@ -47,7 +89,7 @@ function App() {
         <Suspense fallback={
           <div className="flex items-center justify-center w-full min-h-screen">
             <div className="flex flex-col items-center gap-4">
-              <div className="w-12 h-12 rounded-full border-2 border-t-transparent border-[#ff8a65] animate-spin" />
+              <div className="w-12 h-12 rounded-full border-2 border-t-transparent border-[#6e93f7] animate-spin" />
               <span className="font-mono text-xs uppercase tracking-widest text-gray-400">Loading portfolio...</span>
             </div>
           </div>

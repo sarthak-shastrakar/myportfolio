@@ -6,7 +6,7 @@
 @theme {
   --font-serif: "Fraunces", serif;
   --font-sans: "Plus Jakarta Sans", sans-serif;
-  
+
   --color-cosmic-bg-start: #0a0b14;
   --color-cosmic-bg-end: #0a0b14;
   --color-cosmic-accent-start: #6e93f7;
@@ -21,8 +21,8 @@ html {
   font-family: var(--font-sans);
   color: #f3f4f6;
   overflow-x: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 body {
@@ -34,7 +34,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Hide Scrollbar globally (all browsers) except custom ones ────────────── */
+/* ── Hide Scrollbar globally ──────────────────────────────────────────────── */
 *:not(.cards-row-scroll):not(.card-scroll)::-webkit-scrollbar {
   display: none;
   width: 0 !important;
@@ -47,67 +47,280 @@ body {
   outline-offset: 4px;
 }
 
-/* ── Keyframe Animations ──────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+══════════════════════════════════════════════════════════════════════════ */
+
 @keyframes cosmic-pulse {
-  0%, 100% { transform: scale(1);   opacity: 0.5; filter: blur(80px); }
-  50%       { transform: scale(1.1); opacity: 0.7; filter: blur(100px); }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+    filter: blur(80px);
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+    filter: blur(100px);
+  }
 }
 
 @keyframes float-slow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50%       { transform: translateY(-15px) rotate(2deg); }
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
 }
 
 @keyframes float-astronaut {
-  0%   { transform: translateY(0px)    rotate(0deg); }
-  33%  { transform: translateY(-12px)  rotate(-1.5deg); }
-  66%  { transform: translateY(6px)    rotate(1deg); }
-  100% { transform: translateY(0px)    rotate(0deg); }
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  33% {
+    transform: translateY(-12px) rotate(-1.5deg);
+  }
+
+  66% {
+    transform: translateY(6px) rotate(1deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
 }
 
 @keyframes star-twinkle {
-  0%, 100% { opacity: 0.2; }
-  50%       { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes scroll-code {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
 }
 
-/* Button shimmer sweep */
+/* Shimmer sweep */
 @keyframes shimmer-sweep {
-  0%   { transform: translateX(-100%) skewX(-20deg); }
-  100% { transform: translateX(250%)  skewX(-20deg); }
+  0% {
+    transform: translateX(-100%) skewX(-20deg);
+  }
+
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
 }
 
-/* Count-up fade in */
+/* Count-up fade */
 @keyframes count-up-fade {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ── Animation Classes ────────────────────────────────────────────────────── */
-.animate-cosmic-pulse   { animation: cosmic-pulse      8s ease-in-out infinite; }
-.animate-float-slow     { animation: float-slow        6s ease-in-out infinite; }
-.animate-float-astronaut{ animation: float-astronaut  8s ease-in-out infinite; }
-.animate-scroll-code    { animation: scroll-code      20s linear    infinite; }
+/* Shooting star */
+@keyframes shooting-star {
+  0% {
+    transform: translate(0, 0) rotate(215deg);
+    opacity: 1;
+    width: 4px;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-600px, 600px) rotate(215deg);
+    opacity: 0;
+    width: 120px;
+  }
+}
+
+/* Nebula drift */
+@keyframes nebula-drift {
+
+  0%,
+  100% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.15;
+  }
+
+  33% {
+    transform: translate(30px, -20px) scale(1.05);
+    opacity: 0.22;
+  }
+
+  66% {
+    transform: translate(-20px, 15px) scale(0.97);
+    opacity: 0.18;
+  }
+}
+
+/* Orbit rings rotation */
+@keyframes orbit-cw {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-ccw {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Gradient text shimmer */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Progress ring draw */
+@keyframes ring-draw {
+  from {
+    stroke-dashoffset: 283;
+  }
+
+  to {
+    stroke-dashoffset: var(--ring-offset);
+  }
+}
+
+/* Glow pulse for borders */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--glow-color, rgba(110, 147, 247, 0.3));
+  }
+
+  50% {
+    box-shadow: 0 0 20px var(--glow-color, rgba(110, 147, 247, 0.5)), 0 0 40px var(--glow-color, rgba(110, 147, 247, 0.2));
+  }
+}
+
+/* animStar (existing background stars) */
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+/* Scroll progress bar */
+@keyframes progress-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(110, 147, 247, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ANIMATION CLASSES
+══════════════════════════════════════════════════════════════════════════ */
+
+.animate-cosmic-pulse {
+  animation: cosmic-pulse 8s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.animate-float-astronaut {
+  animation: float-astronaut 8s ease-in-out infinite;
+}
+
+.animate-scroll-code {
+  animation: scroll-code 20s linear infinite;
+}
+
+.animate-orbit-cw {
+  animation: orbit-cw 55s linear infinite;
+}
+
+.animate-orbit-ccw {
+  animation: orbit-ccw 38s linear infinite;
+}
+
+.animate-orbit-mid {
+  animation: orbit-cw 75s linear infinite;
+}
+
+.animate-nebula {
+  animation: nebula-drift 14s ease-in-out infinite;
+}
+
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+}
 
 /* Shimmer button overlay */
 .btn-shimmer {
   position: relative;
   overflow: hidden;
 }
+
 .btn-shimmer::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.22) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.22) 50%,
+      transparent 100%);
   transform: translateX(-100%) skewX(-20deg);
   animation: shimmer-sweep 2.8s ease-in-out infinite;
 }
@@ -116,17 +329,33 @@ body {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(110, 147, 247, 0.2);
 }
 
-/* ── Glass Utilities ──────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   GLASS UTILITIES
+══════════════════════════════════════════════════════════════════════════ */
+
 .glass {
   background: rgba(11, 16, 32, 0.45);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-premium {
+  background: rgba(11, 16, 32, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(110, 147, 247, 0.12);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(110, 147, 247, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
 
 .glass-accent {
   background: rgba(110, 147, 247, 0.05);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(110, 147, 247, 0.15);
   box-shadow: 0 8px 32px 0 rgba(110, 147, 247, 0.05);
 }
@@ -134,6 +363,7 @@ body {
 .glass-card {
   background: rgba(15, 23, 42, 0.3);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -145,10 +375,21 @@ body {
   border: 1px solid rgba(110, 147, 247, 0.25);
 }
 
-/* Stat cards hover glow variants */
-.stat-card-blue:hover  { border-color: rgba(110, 147, 247, 0.45) !important; box-shadow: 0 0 24px rgba(110, 147, 247, 0.2), 0 16px 32px -8px rgba(0,0,0,0.4); }
-.stat-card-purple:hover{ border-color: rgba(139, 92, 246, 0.45) !important;  box-shadow: 0 0 24px rgba(139, 92, 246, 0.2), 0 16px 32px -8px rgba(0,0,0,0.4); }
-.stat-card-coral:hover { border-color: rgba(255, 138, 101, 0.45)!important;  box-shadow: 0 0 24px rgba(255, 138, 101, 0.2),0 16px 32px -8px rgba(0,0,0,0.4); }
+/* ── Stat card hover variants ─────────────────────────────────────────────── */
+.stat-card-blue:hover {
+  border-color: rgba(110, 147, 247, 0.45) !important;
+  box-shadow: 0 0 24px rgba(110, 147, 247, 0.2), 0 16px 32px -8px rgba(0, 0, 0, 0.4);
+}
+
+.stat-card-purple:hover {
+  border-color: rgba(139, 92, 246, 0.45) !important;
+  box-shadow: 0 0 24px rgba(139, 92, 246, 0.2), 0 16px 32px -8px rgba(0, 0, 0, 0.4);
+}
+
+.stat-card-coral:hover {
+  border-color: rgba(255, 138, 101, 0.45) !important;
+  box-shadow: 0 0 24px rgba(255, 138, 101, 0.2), 0 16px 32px -8px rgba(0, 0, 0, 0.4);
+}
 
 /* ── Cosmic Grid ──────────────────────────────────────────────────────────── */
 .cosmic-grid {
@@ -158,7 +399,56 @@ body {
   background-size: 50px 50px;
 }
 
-/* ── Glass Bloom Social Buttons ───────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════════════
+   SCROLL PROGRESS BAR
+══════════════════════════════════════════════════════════════════════════ */
+
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6e93f7, #8b5cf6, #ff8a65);
+  transform-origin: left;
+  z-index: 100;
+  animation: progress-glow 2s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SKILL CARD PROGRESS RING
+══════════════════════════════════════════════════════════════════════════ */
+
+.skill-ring {
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MAGNETIC BUTTON
+══════════════════════════════════════════════════════════════════════════ */
+
+.magnetic-btn {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SHOOTING STARS
+══════════════════════════════════════════════════════════════════════════ */
+
+.shooting-star {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 50%;
+  animation: shooting-star 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SOCIAL BLOOM BUTTONS (preserved)
+══════════════════════════════════════════════════════════════════════════ */
+
 .social-bloom-btn {
   background: none;
   border: none;
@@ -230,17 +520,11 @@ body {
 .social-bloom-btn .bloom-container .button-container-main .button-glass {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.6) 100%
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 100%);
   transform: translate(0%, -50%) rotate(0deg);
   transform-origin: bottom center;
   transition: all 0.5s ease-in-out;
 }
-
-
 
 .social-bloom-btn:hover .bloom-container {
   transform: scale(1.1);
@@ -261,4 +545,18 @@ body {
 
 .social-bloom-btn:active .bloom-container .button-container-main .button-inner {
   transform: scale(1.2);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION — disable all animations
+══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

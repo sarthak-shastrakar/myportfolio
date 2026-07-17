@@ -4,12 +4,12 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Menu, X, Home, User, Layers, Briefcase, Radio, Award } from 'lucide-react';
 
 const NAV_LINKS = [
-  { path: '/',            label: 'Home',       icon: Home,     end: true },
-  { path: '/about',       label: 'About',      icon: User,     end: false },
-  { path: '/skills',      label: 'Skills',     icon: Layers,   end: false },
-  { path: '/work',        label: 'Work',       icon: Briefcase,end: false },
-  { path: '/experience',  label: 'Experience', icon: Radio,    end: false },
-  { path: '/certification',label: 'Certifications', icon: Award,    end: false },
+  { path: '/', label: 'Home', icon: Home, end: true },
+  { path: '/about', label: 'About', icon: User, end: false },
+  { path: '/skills', label: 'Skills', icon: Layers, end: false },
+  { path: '/work', label: 'Work', icon: Briefcase, end: false },
+  { path: '/experience', label: 'Experience', icon: Radio, end: false },
+  { path: '/certification', label: 'Certifications', icon: Award, end: false },
 ];
 
 /* ── Magnetic tilt hook ─────────────────────────────────────────────────── */
@@ -22,15 +22,14 @@ const useMagneticTilt = (disabled) => {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const cx = rect.left + rect.width  / 2;
-    const cy = rect.top  + rect.height / 2;
-    const dx = (e.clientX - cx) / (rect.width  / 2);
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
     const dy = (e.clientY - cy) / (rect.height / 2);
     setTilt({ x: dy * -8, y: dx * 8 });
   }, [disabled]);
 
   const onMouseLeave = useCallback(() => setTilt({ x: 0, y: 0 }), []);
-
   return { ref, tilt, onMouseMove, onMouseLeave };
 };
 
@@ -51,40 +50,49 @@ const NavItem = ({ link, index, reduced }) => {
           initial={{ opacity: 0, y: -8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative flex items-center gap-1.5 px-4 py-1.5 rounded-full cursor-pointer select-none"
+          className="relative flex items-center gap-1.5 px-4 py-2 rounded-full cursor-pointer select-none group"
         >
-          {/* Shared-layout sliding active pill */}
+          {/* Shared-layout active pill */}
           {isActive && (
             <motion.span
               layoutId={reduced ? undefined : 'nav-pill'}
               className="absolute inset-0 rounded-full"
               style={{
-                background: 'rgba(110,147,247,0.15)',
-                border: '1px solid rgba(110,147,247,0.35)',
+                background: 'rgba(110,147,247,0.12)',
+                border: '1px solid rgba(110,147,247,0.28)',
                 borderRadius: 999,
               }}
               transition={
                 reduced
                   ? { duration: 0 }
-                  : { type: 'spring', stiffness: 420, damping: 36 }
+                  : { type: 'spring', stiffness: 380, damping: 32 }
               }
             />
           )}
 
+          {/* Animated bottom underline on hover */}
+          <motion.span
+            className="absolute bottom-0 left-4 right-4 h-px rounded-full"
+            style={{ background: 'linear-gradient(90deg, #6e93f7, #8b5cf6)' }}
+            initial={{ scaleX: 0, opacity: 0 }}
+            whileHover={{ scaleX: 1, opacity: isActive ? 0 : 1 }}
+            transition={{ duration: 0.22 }}
+          />
+
           {/* Icon */}
           <span
             className="relative z-10 flex items-center transition-colors duration-200"
-            style={{ color: isActive ? '#eef1fb' : 'rgba(138,147,179,1)' }}
+            style={{ color: isActive ? '#c4d0ff' : 'rgba(138,147,179,1)' }}
           >
             <link.icon size={13} />
           </span>
 
           {/* Label */}
           <span
-            className="relative z-10 text-[14px] font-medium transition-colors duration-200"
+            className="relative z-10 text-[13.5px] font-medium transition-colors duration-200"
             style={{
               fontFamily: 'var(--font-sans)',
-              color: isActive ? '#eef1fb' : 'rgba(138,147,179,1)',
+              color: isActive ? '#dde5ff' : 'rgba(138,147,179,1)',
             }}
           >
             {link.label}
@@ -97,23 +105,20 @@ const NavItem = ({ link, index, reduced }) => {
 
 /* ── Main Navbar ─────────────────────────────────────────────────────────── */
 const Nav = () => {
-  const [scrolled,  setScrolled]  = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const reduced  = useReducedMotion();
+  const reduced = useReducedMotion();
   const location = useLocation();
   const drawerRef = useRef(null);
 
-  /* scroll listener */
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  /* close mobile menu on route change */
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
-  /* close on outside click */
   useEffect(() => {
     if (!mobileOpen) return;
     const handler = (e) => {
@@ -127,30 +132,34 @@ const Nav = () => {
 
   return (
     <>
-      {/* ══ NAVBAR BAR ══════════════════════════════════════════════════════ */}
+      {/* ══ NAVBAR ══════════════════════════════════════════════════════════ */}
       <motion.header
-        initial={reduced ? { opacity: 0 } : { y: -40, opacity: 0 }}
+        initial={reduced ? { opacity: 0 } : { y: -48, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
         style={{
-          position:       'fixed',
-          top:            0,
-          left:           0,
-          right:          0,
-          zIndex:         50,
-          height:         64,
-          display:        'flex',
-          alignItems:     'center',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          height: 64,
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'space-between',
-          padding:        '0 2rem',
-          background:     'rgba(8,10,22,0.75)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderBottom:   '1px solid rgba(124,158,255,0.12)',
+          padding: '0 2rem',
+          background: scrolled
+            ? 'rgba(8,10,22,0.88)'
+            : 'rgba(8,10,22,0.65)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderBottom: scrolled
+            ? '1px solid rgba(110,147,247,0.15)'
+            : '1px solid rgba(255,255,255,0.05)',
           boxShadow: scrolled
-            ? '0 4px 30px rgba(110,147,247,0.1)'
+            ? '0 4px 40px rgba(0,0,0,0.4), 0 0 0 0.5px rgba(110,147,247,0.1)'
             : 'none',
-          transition: 'box-shadow 0.4s ease',
+          transition: 'all 0.4s ease',
         }}
       >
         {/* ── LOGO ── */}
@@ -161,41 +170,28 @@ const Nav = () => {
             className="flex items-center gap-2 select-none"
           >
             <span className="font-mono text-base font-bold flex items-center leading-none">
-              {/* < */}
               <motion.span
                 style={{ color: '#ff8a65' }}
                 animate={reduced ? {} : { x: [0, -2, 0] }}
                 transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut' }}
-              >
-                {'<'}
-              </motion.span>
-
-              {/* Portfolio */}
+              >{'<'}</motion.span>
               <span
                 className="font-extrabold px-1"
                 style={{
                   fontFamily: 'var(--font-serif)',
                   fontSize: '1.1rem',
-                  background: 'linear-gradient(90deg, #6e93f7 0%, #8b5cf6 100%)',
+                  background: 'linear-gradient(90deg, #6e93f7 0%, #a78bfa 60%, #8b5cf6 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
                 }}
-              >
-                Portfolio
-              </span>
-
-              {/* /> */}
+              >Portfolio</span>
               <motion.span
                 style={{ color: '#ff8a65' }}
                 animate={reduced ? {} : { x: [0, 2, 0] }}
                 transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut' }}
-              >
-                {'/>'}
-              </motion.span>
+              >{'/>'}</motion.span>
             </span>
-
-
           </motion.div>
         </NavLink>
 
@@ -214,23 +210,15 @@ const Nav = () => {
         >
           <AnimatePresence mode="wait" initial={false}>
             {mobileOpen ? (
-              <motion.span
-                key="x"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.18 }}
-              >
+              <motion.span key="x"
+                initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
                 <X size={20} />
               </motion.span>
             ) : (
-              <motion.span
-                key="menu"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.18 }}
-              >
+              <motion.span key="menu"
+                initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
                 <Menu size={20} />
               </motion.span>
             )}
@@ -249,15 +237,12 @@ const Nav = () => {
             exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              position:       'fixed',
-              top:            64,
-              left:           0,
-              right:          0,
-              zIndex:         49,
-              background:     'rgba(8,10,22,0.95)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              borderBottom:   '1px solid rgba(124,158,255,0.12)',
+              position: 'fixed', top: 64, left: 0, right: 0, zIndex: 49,
+              background: 'rgba(8,10,22,0.97)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderBottom: '1px solid rgba(110,147,247,0.12)',
+              boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
             }}
           >
             <div className="flex flex-col px-4 py-4 gap-1">
@@ -273,27 +258,21 @@ const Nav = () => {
                     <motion.div
                       initial={{ x: 16, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: i * 0.04, duration: 0.3, ease: [0.16,1,0.3,1] }}
+                      transition={{ delay: i * 0.04, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors duration-200"
                       style={{
-                        background:  isActive ? 'rgba(110,147,247,0.12)' : 'transparent',
-                        border:      isActive ? '1px solid rgba(110,147,247,0.25)' : '1px solid transparent',
-                        color:       isActive ? '#eef1fb' : 'rgba(138,147,179,1)',
+                        background: isActive ? 'rgba(110,147,247,0.12)' : 'transparent',
+                        border: isActive ? '1px solid rgba(110,147,247,0.25)' : '1px solid transparent',
+                        color: isActive ? '#dde5ff' : 'rgba(138,147,179,1)',
                       }}
                     >
                       <link.icon size={17} />
                       <span>{link.label}</span>
                       {isActive && (
-                        <span
-                          style={{
-                            marginLeft: 'auto',
-                            width:       6,
-                            height:      6,
-                            borderRadius:'50%',
-                            background:  '#ff8a65',
-                            display:    'inline-block',
-                          }}
-                        />
+                        <span style={{
+                          marginLeft: 'auto', width: 6, height: 6,
+                          borderRadius: '50%', background: '#ff8a65', display: 'inline-block',
+                        }} />
                       )}
                     </motion.div>
                   )}
