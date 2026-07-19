@@ -1,14 +1,14 @@
 /* ── Google Fonts ─────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
 @theme {
   --font-serif: "Fraunces", serif;
-  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-sans: "Inter", sans-serif;
 
-  --color-cosmic-bg-start: #0a0b14;
-  --color-cosmic-bg-end: #0a0b14;
+  --color-cosmic-bg-start: #0f172a;
+  --color-cosmic-bg-end: #0f172a;
   --color-cosmic-accent-start: #6e93f7;
   --color-cosmic-accent-end: #8b5cf6;
   --color-cosmic-coral: #ff8a65;
@@ -19,7 +19,7 @@
 html {
   scroll-behavior: smooth;
   font-family: var(--font-sans);
-  color: #f3f4f6;
+  color: #e2e8f0;
   overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -29,7 +29,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: #0a0b14;
+  background: #0f172a;
   background-attachment: fixed;
   overflow-x: hidden;
 }
@@ -334,7 +334,7 @@ body {
 ══════════════════════════════════════════════════════════════════════════ */
 
 .glass {
-  background: rgba(11, 16, 32, 0.45);
+  background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -343,7 +343,7 @@ body {
 }
 
 .glass-premium {
-  background: rgba(11, 16, 32, 0.6);
+  background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(110, 147, 247, 0.12);

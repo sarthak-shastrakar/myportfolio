@@ -315,14 +315,6 @@ const Certification = () => {
           selectedCert={selectedCert}
           setSelectedCert={setSelectedCert}
         />
-        {/* Row 2: scroll right (reversed) */}
-        <MarqueeRow
-          certs={[...certificates].reverse()}
-          direction="right"
-          speed={42}
-          selectedCert={selectedCert}
-          setSelectedCert={setSelectedCert}
-        />
       </div>
 
       {/* ── Certificate count badge ── */}

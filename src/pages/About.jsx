@@ -117,9 +117,9 @@ const About = () => {
 
           {/* Animated Stats */}
           <div className="grid grid-cols-3 gap-2 w-full pt-2">
-            <StatChip target={2} suffix="+" label="Years" color="#6e93f7" glowColor="rgba(110,147,247,0.08)" />
+            <StatChip target={1} suffix="+" label="Years" color="#6e93f7" glowColor="rgba(110,147,247,0.08)" />
             <StatChip target={10} suffix="+" label="Projects" color="#a78bfa" glowColor="rgba(167,139,250,0.08)" />
-            <StatChip target={5} suffix="+" label="Tech" color="#2dd4bf" glowColor="rgba(45,212,191,0.08)" />
+            <StatChip target={6} suffix="+" label="Tech" color="#2dd4bf" glowColor="rgba(45,212,191,0.08)" />
           </div>
         </motion.div>
 

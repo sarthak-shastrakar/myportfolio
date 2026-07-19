@@ -240,10 +240,7 @@ const Home = () => {
           {/* Typing role */}
           <TypingSubtitle />
 
-          {/* 1-line bio */}
-          <p className="text-gray-400 text-base md:text-lg font-sans max-w-md">
-            I build <span className="text-white font-semibold">fast, scalable web apps</span> — from database to deployment.
-          </p>
+
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-2">
@@ -257,27 +254,7 @@ const Home = () => {
             <DownloadButton onClick={handleDownload} />
           </div>
 
-          {/* Subtle tech stack row */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="flex items-center gap-2 pt-2"
-          >
-            <span className="text-[11px] text-gray-600 font-mono uppercase tracking-widest">Stack:</span>
-            {['React', 'Node.js', 'MongoDB', 'Express'].map((tech, i) => (
-              <motion.span
-                key={tech}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 + i * 0.08 }}
-                className="text-[10px] font-mono px-2 py-0.5 rounded border border-white/8 text-gray-500"
-                style={{ background: 'rgba(255,255,255,0.02)' }}
-              >
-                {tech}
-              </motion.span>
-            ))}
-          </motion.div>
+
         </motion.div>
 
         {/* ── RIGHT: Astronaut with orbit rings ── */}

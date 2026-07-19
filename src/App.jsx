@@ -7,7 +7,7 @@ import ParticleBackground from './components/ParticleBackground';
 import SocialDock from './components/SocialDock';
 import PageTransition from './components/PageTransition';
 import CursorSpotlight from './components/CursorSpotlight';
-import ScrollProgress from './components/ScrollProgress';
+
 
 // Lazy-load page components
 const Home = lazy(() => import('./pages/Home'));
@@ -76,8 +76,7 @@ function App() {
         {/* Cursor spotlight glow */}
         <CursorSpotlight />
 
-        {/* Scroll progress bar */}
-        <ScrollProgress />
+
 
         {/* Global floating social dock */}
         <SocialDock />

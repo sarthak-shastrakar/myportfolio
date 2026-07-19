@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Menu, X, Home, User, Layers, Briefcase, Radio, Award } from 'lucide-react';
+import { Menu, X, Home, User, Layers, Briefcase, Radio, Award, Mail, Phone } from 'lucide-react';
+import { GithubIcon as Github, LinkedinIcon as Linkedin } from './icons';
 
 const NAV_LINKS = [
   { path: '/', label: 'Home', icon: Home, end: true },
@@ -109,7 +110,7 @@ const Nav = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const reduced = useReducedMotion();
   const location = useLocation();
-  const drawerRef = useRef(null);
+  const sidebarRef = useRef(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
@@ -119,20 +120,21 @@ const Nav = () => {
 
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
+  // Lock scroll when mobile menu is open to prevent page scrolling behind it
   useEffect(() => {
-    if (!mobileOpen) return;
-    const handler = (e) => {
-      if (drawerRef.current && !drawerRef.current.contains(e.target)) {
-        setMobileOpen(false);
-      }
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
     };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
   }, [mobileOpen]);
 
   return (
     <>
-      {/* ══ NAVBAR ══════════════════════════════════════════════════════════ */}
+      {/* ══ NAVBAR HEADER ═══════════════════════════════════════════════════ */}
       <motion.header
         initial={reduced ? { opacity: 0 } : { y: -48, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -147,7 +149,7 @@ const Nav = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 2rem',
+          padding: '0 1.5rem',
           background: scrolled
             ? 'rgba(8,10,22,0.88)'
             : 'rgba(8,10,22,0.65)',
@@ -205,81 +207,135 @@ const Nav = () => {
         {/* ── MOBILE HAMBURGER ── */}
         <button
           onClick={() => setMobileOpen(o => !o)}
-          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-gray-400 hover:text-white focus:outline-none transition-colors duration-200"
+          className="md:hidden flex items-center justify-center w-11 h-11 rounded-full text-gray-400 hover:text-white hover:bg-white/5 active:scale-95 focus:outline-none transition-all duration-200 z-50 relative"
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
           <AnimatePresence mode="wait" initial={false}>
             {mobileOpen ? (
               <motion.span key="x"
                 initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                <X size={20} />
+                exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                <X size={22} />
               </motion.span>
             ) : (
               <motion.span key="menu"
                 initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
-                <Menu size={20} />
+                exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                <Menu size={22} />
               </motion.span>
             )}
           </AnimatePresence>
         </button>
       </motion.header>
 
-      {/* ══ MOBILE DRAWER ═══════════════════════════════════════════════════ */}
+      {/* ══ MOBILE SIDEBAR DRAWER (80% Width) ═════════════════════════════════ */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            ref={drawerRef}
-            key="mobile-drawer"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              position: 'fixed', top: 64, left: 0, right: 0, zIndex: 49,
-              background: 'rgba(8,10,22,0.97)',
-              backdropFilter: 'blur(24px)',
-              WebkitBackdropFilter: 'blur(24px)',
-              borderBottom: '1px solid rgba(110,147,247,0.12)',
-              boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
-            }}
-          >
-            <div className="flex flex-col px-4 py-4 gap-1">
-              {NAV_LINKS.map((link, i) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  end={link.end}
-                  onClick={() => setMobileOpen(false)}
-                  className="focus-visible:outline-none"
-                >
-                  {({ isActive }) => (
-                    <motion.div
-                      initial={{ x: 16, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: i * 0.04, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors duration-200"
-                      style={{
-                        background: isActive ? 'rgba(110,147,247,0.12)' : 'transparent',
-                        border: isActive ? '1px solid rgba(110,147,247,0.25)' : '1px solid transparent',
-                        color: isActive ? '#dde5ff' : 'rgba(138,147,179,1)',
-                      }}
-                    >
-                      <link.icon size={17} />
-                      <span>{link.label}</span>
-                      {isActive && (
-                        <span style={{
-                          marginLeft: 'auto', width: 6, height: 6,
-                          borderRadius: '50%', background: '#ff8a65', display: 'inline-block',
-                        }} />
-                      )}
-                    </motion.div>
-                  )}
-                </NavLink>
-              ))}
-            </div>
-          </motion.div>
+          <>
+            {/* Backdrop Blur Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setMobileOpen(false)}
+              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+            />
+
+            {/* Sidebar Container */}
+            <motion.div
+              ref={sidebarRef}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={reduced ? { duration: 0.15 } : { type: 'spring', damping: 26, stiffness: 220 }}
+              className="md:hidden fixed right-0 top-0 bottom-0 z-50 w-[80%] max-w-[340px] bg-slate-950/95 border-l border-white/5 shadow-2xl flex flex-col justify-between pt-20 pb-6 px-4 backdrop-blur-2xl"
+              style={{
+                background: 'rgba(8,10,22,0.96)',
+                boxShadow: '-10px 0 30px rgba(0,0,0,0.5)',
+              }}
+            >
+              {/* Main Links List (Scrollable for Landscape/Small screens) */}
+              <div className="flex-1 overflow-y-auto pr-1 card-scroll flex flex-col gap-1.5 py-4">
+                {NAV_LINKS.map((link, i) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    end={link.end}
+                    onClick={() => setMobileOpen(false)}
+                    className="focus-visible:outline-none block"
+                  >
+                    {({ isActive }) => (
+                      <motion.div
+                        initial={reduced ? {} : { x: 30, opacity: 0 }}
+                        animate={reduced ? {} : { x: 0, opacity: 1 }}
+                        transition={{ delay: i * 0.04, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        className="flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 touch-manipulation"
+                        style={{
+                          background: isActive ? 'rgba(110,147,247,0.1)' : 'transparent',
+                          border: isActive ? '1px solid rgba(110,147,247,0.2)' : '1px solid transparent',
+                          color: isActive ? '#dde5ff' : 'rgba(138,147,179,1)',
+                        }}
+                      >
+                        <link.icon size={18} className="flex-shrink-0" />
+                        <span>{link.label}</span>
+                        {isActive && (
+                          <span
+                            className="ml-auto w-2 h-2 rounded-full"
+                            style={{
+                              background: '#ff8a65',
+                              boxShadow: '0 0 8px #ff8a65',
+                            }}
+                          />
+                        )}
+                      </motion.div>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
+
+              {/* Fixed bottom footer area containing Social Links */}
+              <div className="border-t border-white/5 pt-4 mt-auto flex flex-col gap-4">
+                <div className="text-[10px] font-mono tracking-wider uppercase opacity-45 text-center">
+                  Commander Socials
+                </div>
+                <div className="flex justify-around items-center px-2">
+                  <a
+                    href="https://github.com/sarthak-shastrakar"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-200"
+                    aria-label="GitHub"
+                  >
+                    <Github size={18} />
+                  </a>
+                  <a
+                    href="https://linkedin.com/in/sarthak-shastrakar"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-200"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin size={18} />
+                  </a>
+                  <a
+                    href="mailto:sarthakshastrakar9@gmail.com"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-200"
+                    aria-label="Email"
+                  >
+                    <Mail size={18} />
+                  </a>
+                  <a
+                    href="tel:+918767901968"
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 active:scale-90 transition-all duration-200"
+                    aria-label="Call"
+                  >
+                    <Phone size={18} />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
